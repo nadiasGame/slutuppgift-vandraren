@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const { initRoles, assignRoleToUser } = require('./database');
 const jwt = require('jsonwebtoken');
 
+
 require('dotenv').config();
 
 const {
@@ -214,21 +215,16 @@ app.get('/api/user', authorization, async (req, res) => {
   });
 });
 
-app.get('/api/logout', authorization, validateSession, async (req, res) => {
-  const sessionId = req.sessionId;
-  const userId = req.userId;
-  const result = await db.revokeSession(
-    sessionId,
-    userId,
-    createAndFormatDate()
-  );
-  console.log('REVOKED SESSION: ', result);
+app.get('/api/logout',async (req, res) => {
+
   return res
     .clearCookie('accessToken')
-    .clearCookie('refreshToken')
+    
     .status(200)
     .json({ message: 'Successfully logged out!!' });
 });
+
+
 
 
 
